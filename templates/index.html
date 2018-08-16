@@ -10,7 +10,7 @@
     <!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-		<![endif]-->
+    <![endif]-->
 </head>
 <body>
     <nav class="navbar navbar-default">
@@ -29,9 +29,8 @@
     <div class="container">
         <div class="row">
             <div class="center-block">
-
                 <div clas="form-group" id="input-info">
-                    <label for="info-textarea">请输入.</label>
+                    <label for="info-textarea">一对一：</label>
                     <div class="text-info">
                         示例:
 {#                        <span class="alert alert-info">#}
@@ -39,10 +38,27 @@
 {#                        </span>#}
                         <button clas="btn btn-default" onclick="copyText();">复制</button>
                     </div>
-                    <textarea class="form-control" id="info-textarea" rows="3"></textarea>
+                    <textarea class="form-control" id="info-textarea" rows="2"></textarea>
                 </div>
                 <div id="input-check"></div>
                 <button type="submit" class="btn btn-primary pull-right" id="input-submit">提交</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="center-block">
+                <div clas="form-group" id="input-info-xuetang">
+                    <label for="info-textarea-xuetang">智慧学堂：</label>
+                    <div class="text-info">
+                        示例:
+{#                        <span class="alert alert-info">#}
+                            <span>T1,3965272071505922, 宝山学习中心 ,宝山区通河新村, 陈女士 , 157 2116 6568， 陈晓, 6, 2018-08-18 ,备注</span>
+{#                        </span>#}
+                        <button clas="btn btn-default" onclick="copyTextXueTang();">复制</button>
+                    </div>
+                    <textarea class="form-control" id="info-textarea-xuetang" rows="2"></textarea>
+                </div>
+                <div id="input-check-xuetang"></div>
+                <button type="submit" class="btn btn-primary pull-right" id="input-submit-xuetang">提交</button>
             </div>
         </div>
 
@@ -52,6 +68,7 @@
                     <h4>今日已完成:</h4>
                 </div>
                 <div class="card-block">
+                    <h5>一对一</h5>
                     <table class="table table-striped" id="completion-tbl">
                         <thead>
                             <tr>
@@ -70,6 +87,7 @@
                         <tbody>
                         {% if infos is not none %}
                         {% for info in infos %}
+                        {% if info.category == 'ydy' %}
                             <tr id="{{ info.id }}">
                                 <td>{{ (info.dt + interval).strftime("%Y-%m-%d %H:%M:%S") }}</td>
                                 <td>{{ info.station }}</td>
@@ -82,12 +100,54 @@
                                 <td>{{ info.remark }}</td>
                                 <td><button class="btn btn-block btn-info" aria-hidden="true">删除</button></td>
                             </tr>
+                        {% endif %}
                         {% endfor %}
                         {%  endif %}
                         </tbody>
                     </table>
                 </div>
-
+                <div class="card-block">
+                    <h5>智慧学堂</h5>
+                    <table class="table table-striped" id="completion-tbl-xuetang">
+                        <thead>
+                            <tr>
+                                <th>录入时间</th>
+                                <th>Q</th>
+                                <th>ID</th>
+                                <th>学区</th>
+                                <th>所在域</th>
+                                <th>家长姓名</th>
+                                <th>电话</th>
+                                <th>学生姓名</th>
+                                <th>年龄</th>
+                                <th>预约时间</th>
+                                <th>备注</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% if infos is not none %}
+                        {% for info in infos %}
+                        {% if info.category == 'zhxt' %}
+                            <tr id="{{ info.id }}">
+                                <td>{{ (info.dt + interval).strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                                <td>{{ info.station }}</td>
+                                <td>{{ info.src_phone }}</td>
+                                <td>{{ info.district }}</td>
+                                <td>{{ info.home_address }}</td>
+                                <td>{{ info.name }}</td>
+                                <td>{{ info.phone }}</td>
+                                <td>{{ info.student_name }}</td>
+                                <td>{{ info.age }}</td>
+                                <td>{{ info.book_dt }}</td>
+                                <td>{{ info.remark }}</td>
+                                <td><button class="btn btn-block btn-info" aria-hidden="true">删除</button></td>
+                            </tr>
+                        {% endif %}
+                        {% endfor %}
+                        {%  endif %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -151,6 +211,14 @@
                 document.execCommand("copy");
                 $temp.remove();
         };
+        function copyTextXueTang(){
+             var copyText = $("#input-info-xuetang .text-info span");
+                var $temp = $("<input>");
+                $("body").append($temp);
+                $temp.val(copyText.text()).select();
+                document.execCommand("copy");
+                $temp.remove();
+        }
 
 
     </script>

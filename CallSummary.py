@@ -42,15 +42,19 @@ class PhoneCall(db.Model):
     remark = db.Column(db.Text())
     dt = db.Column(db.DATETIME())
     operator = db.Column(db.String(30))
+    student_name = db.Column(db.String(30))
+    age = db.Column(db.Integer)
+    category = db.Column(db.Text())
+    home_address = db.Column(db.Text())
+    book_dt = db.Column(db.DATETIME())
 
     def __repr__(self):
         return "<Operator(%s):%d>" %(self.operator, self.id)
 
 
 class UserForm(FlaskForm):
-    name = TextField("text here", validators=[Required()])
+    name = StringField("text here", validators=[DataRequired()])
     submit = SubmitField("Submit")
-
 
 
 class User(UserMixin,db.Model):
@@ -68,6 +72,7 @@ class LoginForm(FlaskForm):
     name = StringField("name", validators=[DataRequired()])
     passwd = PasswordField("passwd", validators=[DataRequired()])
 
+
 # flask-login
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -83,22 +88,20 @@ def load_user(user_id):
 @app.route("/getstats/<dt>")
 def get_stats(dt=None):
     am_pm = "AM"
-    interval= datetime.timedelta(hours=8)
     # am /pm
 
-    dt_end = dateparser.parse(dt, date_formats=["%Y%m%d%H"]) - interval if dt is not None else datetime.datetime.utcnow()
-    dt = dt or dt_end.strftime("%Y%m%d")
+    dt_end = dateparser.parse(dt, date_formats=["%Y%m%d%H"]) if dt is not None else datetime.datetime.now()
+    dt = dt_end.strftime("%Y%m%d")
 
-    if (dt_end + interval).hour > 13 :
-        dt_start = datetime.datetime(year=dt_end.year,month=dt_end.month, day=dt_end.day
-                                        ,hour=12,minute=0,second=0) - interval
+    if dt_end.hour > 13:
+        dt_start = datetime.datetime(year=dt_end.year, month=dt_end.month, day=dt_end.day, hour=12, minute=0, second=0)
         am_pm = "PM"
     else:
-        dt_start = dt_end.replace(hour=0,minute=0,second=0) - interval
-    sendname= "%s统计.xlsx" % dt
-    filename = "tmp/%s.%s" %(sendname,int(time.time()))
-    utils.createXlsx(dt_start,dt_end, filename, am_pm)
-    return send_file(filename, attachment_filename=sendname,as_attachment=True,cache_timeout=1)
+        dt_start = dt_end.replace(hour=0, minute=0, second=0)
+    send_name = "%s统计.xlsx" % dt
+    filename = "tmp/%s.%s" % (send_name, int(time.time()))
+    utils.createXlsx(dt_start, dt_end, filename, am_pm)
+    return send_file(filename, attachment_filename=send_name,as_attachment=True, cache_timeout=1)
 
 
 @app.route('/')
@@ -107,7 +110,6 @@ def home():
     interval = datetime.timedelta(hours=8)
     db.session.expire_all()
     if current_user.is_authenticated:
-        print(current_user.name)
         infos = PhoneCall.query.filter_by(operator=current_user.name).filter(
             PhoneCall.dt >= datetime.datetime.utcnow().date()).order_by(PhoneCall.dt.desc(),PhoneCall.id.desc()).all()
     return render_template("index.html",infos = infos,interval=interval)
@@ -117,7 +119,6 @@ def home():
 def login():
     name = request.form["name"]
     passwd = request.form["passwd"]
-    print(request.form)
     user = User.query.filter_by(name=name).first()
     if user is not None and user.password == passwd:
         login_user(user, remember=True)

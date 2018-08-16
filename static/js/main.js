@@ -1,7 +1,7 @@
  $(document).ready(function () {
             var infoArr = [],
             infoJson = {};
-            // check input information
+            // check input information -- yiduiyi
             $("#info-textarea").on("change paste keyup",  function () {
                 infoArr = [];
                 var s = $(this).val();
@@ -21,8 +21,8 @@
                 var station = matched_reg[0] ;
                 var src_phone = matched_reg[1];
                 var district = matched_reg[2];
-                var subject = matched_reg[3];
-                var grade = matched_reg[4];
+                var grade = matched_reg[3];
+                var subject = matched_reg[4];
                 var name = matched_reg[5];
                 var phone = matched_reg[6].replace(/\ /g,"");
                 var remark = matched_reg[7] || "" ;
@@ -54,7 +54,76 @@
                     $("#input-submit").removeAttr("disabled");
                     $("#input-check").append(ls);
                     infoJson = {
-                        "dt":dt.utc().format("YYYY-MM-DD HH:mm:ss"),
+                        "dt":dt.local().format("YYYY-MM-DD HH:mm:ss"),
+                        "station":station,
+                        "src_phone":src_phone,
+                        "district":district,
+                        "subject":subject,
+                        "grade":grade,
+                        "name":name,
+                        "phone":phone,
+                        "remark":remark,
+                        "category":"ydy"
+                    };
+                    infoArr.push(dt.local().format("YYYY-MM-DD HH:mm:ss"),station,src_phone,district,grade,subject,name,phone,remark);
+                }
+            });
+            // check input information -- xuetange
+            $("#info-textarea-xuetang").on("change paste keyup",  function () {
+                infoArr = [];
+                var s = $(this).val();
+
+                console.log(s);
+                //var reg = /\S+/g;
+                //var matched_reg = s.match(reg);
+                var matched_reg= s.replace(/，/ig,",").split(",").map(function (value) {
+                    return value.trim();
+                });
+                console.log(matched_reg);
+                if (matched_reg.length < 8){
+                    $("#input-check-xuetang").addClass("alert-danger");
+                    $("#input-check-xuetang").text("输入的数据格式错误");
+                    $("#input-submit-xuetang").attr("disabled","disabled")
+                }
+                var station = matched_reg[0] ;
+                var src_phone = matched_reg[1];
+                var district = matched_reg[2];
+                var home_address = matched_reg[3];
+                var name = matched_reg[4];
+                var phone = matched_reg[5].replace(/\ /g,"");
+                var student_name = matched_reg[6];
+                var age = matched_reg[7];
+                var book_dt = matched_reg[8]
+                var remark = matched_reg[9] || "" ;
+                //console.log("phone:");
+                //console.log(phone);
+                var regmobile = /^0?1[3|4|5|6|8][0-9]\d{8}$/;//手机
+                if (!regmobile.test(phone)){
+                    $("#input-check").addClass("alert-danger");
+                    $("#input-check").text("电话号码有误");
+                    $("#input-submit").attr("disabled","disabled")
+                }else{
+                    $("#input-check").html("");
+
+                    var dt = moment();
+                    var ls = $("<ol class='breadcrumb'></ol>");
+                    var station_tag = $("<li class='breadcrumb-item'></li>").text(station);
+                    var src_phone_tag = $("<li class='breadcrumb-item'></li>").text(src_phone);
+                    var district_tag = $("<li class='breadcrumb-item'></li>").text(district);
+                    var subject_tag = $("<li class='breadcrumb-item'></li>").text(subject);
+                    var grade_tag = $("<li class='breadcrumb-item'></li>").text(grade);
+                    var name_tag = $("<li class='breadcrumb-item'></li>").text(name);
+                    var phone_tag = $("<li class='breadcrumb-item'></li>").text(phone);
+                    var remark_tag = $("<li class='breadcrumb-item'></li>").text(remark);
+
+                    ls.append(station_tag,src_phone_tag,district_tag,subject_tag,grade_tag,name_tag,phone_tag,remark_tag);
+
+
+                    $("#input-check").addClass("alert-info");
+                    $("#input-submit").removeAttr("disabled");
+                    $("#input-check").append(ls);
+                    infoJson = {
+                        "dt":dt.local().format("YYYY-MM-DD HH:mm:ss"),
                         "station":station,
                         "src_phone":src_phone,
                         "district":district,
@@ -64,7 +133,7 @@
                         "phone":phone,
                         "remark":remark
                     };
-                    infoArr.push(dt.local().format("YYYY-MM-DD HH:mm:ss"),station,src_phone,district,subject,grade,name,phone,remark);
+                    infoArr.push(dt.local().format("YYYY-MM-DD HH:mm:ss"),station,src_phone,district,grade,subject,name,phone,remark);
                 }
             });
 
