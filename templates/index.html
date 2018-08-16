@@ -89,7 +89,7 @@
                         {% for info in infos %}
                         {% if info.category == 'ydy' %}
                             <tr id="{{ info.id }}">
-                                <td>{{ (info.dt + interval).strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                                <td>{{ info.dt.strftime("%Y-%m-%d %H:%M:%S") }}</td>
                                 <td>{{ info.station }}</td>
                                 <td>{{ info.src_phone }}</td>
                                 <td>{{ info.district }}</td>
@@ -129,7 +129,7 @@
                         {% for info in infos %}
                         {% if info.category == 'zhxt' %}
                             <tr id="{{ info.id }}">
-                                <td>{{ (info.dt + interval).strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                                <td>{{ info.dt.strftime("%Y-%m-%d %H:%M:%S") }}</td>
                                 <td>{{ info.station }}</td>
                                 <td>{{ info.src_phone }}</td>
                                 <td>{{ info.district }}</td>

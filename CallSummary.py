@@ -1,16 +1,15 @@
-import datetime,time,os
+import time,os
 from flask import Flask, flash, redirect, url_for, session, send_file
-from flask import render_template
+from flask import render_template, abort
 from flask import request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import TextField,SubmitField
-from wtforms.validators import Required
+from wtforms import SubmitField
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 
-from wtforms import StringField,PasswordField
+from wtforms import StringField, PasswordField
 
 import dateparser
 import json
@@ -21,9 +20,11 @@ import utils
 
 current_directory = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
-# app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://logan:09010163@104.128.235.71:3306/jingrui"
+
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///%s/jingrui.sqlite" % current_directory
 app.config["SECRET_KEY"] = 'JAFAEOJFA203432w83'
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 
 db = SQLAlchemy(app)
 bootstrap = Bootstrap(app)
@@ -57,9 +58,9 @@ class UserForm(FlaskForm):
     submit = SubmitField("Submit")
 
 
-class User(UserMixin,db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = "user"
-    id = db.Column(db.Integer,primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30))
     password = db.Column(db.String(30))
 
@@ -84,12 +85,18 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-@app.route("/getstats")
+category_name = {"ydy":"一对一",
+                 'zhxt':'智慧学堂'}
+
+
+@app.route("/getstats/")
 @app.route("/getstats/<dt>")
 def get_stats(dt=None):
     am_pm = "AM"
     # am /pm
-
+    category = request.args.get("ct") or 'ydy'
+    if category not in category_name:
+        abort(400,"argument ct must be yhy or zhxt")
     dt_end = dateparser.parse(dt, date_formats=["%Y%m%d%H"]) if dt is not None else datetime.datetime.now()
     dt = dt_end.strftime("%Y%m%d")
 
@@ -98,21 +105,20 @@ def get_stats(dt=None):
         am_pm = "PM"
     else:
         dt_start = dt_end.replace(hour=0, minute=0, second=0)
-    send_name = "%s统计.xlsx" % dt
+    send_name = "%s统计_%s.xlsx" % (dt, category_name.get(category))
     filename = "tmp/%s.%s" % (send_name, int(time.time()))
-    utils.createXlsx(dt_start, dt_end, filename, am_pm)
-    return send_file(filename, attachment_filename=send_name,as_attachment=True, cache_timeout=1)
+    utils.createXlsx(dt_start, dt_end, filename, am_pm, category)
+    return send_file(filename, attachment_filename=send_name, as_attachment=True, cache_timeout=1)
 
 
 @app.route('/')
 def home():
     infos = None
-    interval = datetime.timedelta(hours=8)
     db.session.expire_all()
     if current_user.is_authenticated:
         infos = PhoneCall.query.filter_by(operator=current_user.name).filter(
-            PhoneCall.dt >= datetime.datetime.utcnow().date()).order_by(PhoneCall.dt.desc(),PhoneCall.id.desc()).all()
-    return render_template("index.html",infos = infos,interval=interval)
+            PhoneCall.dt >= datetime.datetime.now().date()).order_by(PhoneCall.dt.desc(),PhoneCall.id.desc()).all()
+    return render_template("index.html",infos = infos)
 
 
 @app.route("/login", methods=["POST"])
@@ -159,11 +165,12 @@ def safe(p):
 def addinfo():
     info = request.get_json(force=True)
     info["dt"] = dateparser.parse(info["dt"])
+    info["book_dt"] = dateparser.parse(info.get("book_dt")) if info.get("book_dt") else None
     info["operator"] = current_user.name
     info = PhoneCall(**info)
     db.session.add(info)
     db.session.commit()
-    return json.dumps({"success":True, "id":info.id}) ,200, {"contentType":"application/json"}
+    return json.dumps({"success":True, "id":info.id}),200, {"contentType":"application/json"}
 
 
 @app.route("/delinfo", methods=["POST"])
