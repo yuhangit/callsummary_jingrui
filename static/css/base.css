@@ -1,0 +1,25 @@
+.navbar-right {
+	margin-right: 1em;
+}
+
+#completion {
+	margin-top: 5em;
+}
+#completion h4 {
+	margin-bottom: 0;
+}
+ul.list-group-striped li:nth-last-of-type(odd) {
+	background: #8c8c8c;
+}
+#preview {
+	padding: 1em;
+}
+
+.breadcrumb > li + li:before {
+	color: #3c3c3c;
+	content: " | ";
+	padding: 0 5px;
+}
+#myModal div.alert-danger {
+	padding: 0.5em;
+}

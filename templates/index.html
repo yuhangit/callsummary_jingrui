@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <title>精锐项目</title>
+    <meta http-equiv="UA-X-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,intial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/base.css') }}">
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">精锐呼入统计</a>
+        </div>
+        <div id="nav-menu" class="navbar-right">
+            <ul class="nav navbar-nav text-center">
+                {% if current_user.is_authenticated %}
+                    <li style="margin-top: 1em;">{{ current_user.name }}</li>
+                    <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-user"></span>退出</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="center-block">
+
+                <div clas="form-group" id="input-info">
+                    <label for="info-textarea">请输入.</label>
+                    <div class="text-info">
+                        示例:
+{#                        <span class="alert alert-info">#}
+                            <span>T1,3965272071505922,  宝山区通河新村,  初三, 数学, 陈女士 , 157 2116 6568,备注</span>
+{#                        </span>#}
+                        <button clas="btn btn-default" onclick="copyText();">复制</button>
+                    </div>
+                    <textarea class="form-control" id="info-textarea" rows="3"></textarea>
+                </div>
+                <div id="input-check"></div>
+                <button type="submit" class="btn btn-primary pull-right" id="input-submit">提交</button>
+            </div>
+        </div>
+
+        <div class="row" id="completion">
+            <div class="center-block card">
+                <div class="card-header">
+                    <h4>今日已完成:</h4>
+                </div>
+                <div class="card-block">
+                    <table class="table table-striped" id="completion-tbl">
+                        <thead>
+                            <tr>
+                                <th>录入时间</th>
+                                <th>Q</th>
+                                <th>ID</th>
+                                <th>学区</th>
+                                <th>年级</th>
+                                <th>科目</th>
+                                <th>姓名</th>
+                                <th>电话</th>
+                                <th>备注</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% if infos is not none %}
+                        {% for info in infos %}
+                            <tr id="{{ info.id }}">
+                                <td>{{ (info.dt + interval).strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                                <td>{{ info.station }}</td>
+                                <td>{{ info.src_phone }}</td>
+                                <td>{{ info.district }}</td>
+                                <td>{{ info.subject }}</td>
+                                <td>{{ info.grade }}</td>
+                                <td>{{ info.name }}</td>
+                                <td>{{ info.phone }}</td>
+                                <td>{{ info.remark }}</td>
+                                <td><button class="btn btn-block btn-info" aria-hidden="true">删除</button></td>
+                            </tr>
+                        {% endfor %}
+                        {%  endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="myModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                     <h3>登录</h3>
+                </div>
+                <div class="modal-body">
+                    <form method="post" class="form-horizontal" action="{{ url_for('login') }}" name="login_form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="emial">用户名</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control " name="name" id="emial" placeholder="用户名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="password">密码</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" name="passwd" id="password" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-4">
+                                <button type="submit" class="btn btn-primary">登录</button>
+                            </div>
+                            {% if session.get('login_retry',0) > 0  %}
+                            <div class="col-sm-4 alert-danger">
+                                用户名/密码错误(retry:{{ session.get('login_retry') }})
+                            </div>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="{{ url_for('static',filename='js/jquery-1.11.3.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/moment.js') }}"></script>
+
+    {% if not current_user.is_authenticated %}
+    <script>
+        $("#myModal").show();
+    </script>
+    {% endif %}
+    <script>
+
+        function copyText() {
+                var copyText = $("#input-info .text-info span");
+                var $temp = $("<input>");
+                $("body").append($temp);
+                $temp.val(copyText.text()).select();
+                document.execCommand("copy");
+                $temp.remove();
+        };
+
+
+    </script>
+
+</body>
+</html>
