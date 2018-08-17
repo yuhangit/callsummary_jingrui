@@ -85,13 +85,16 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-category_name = {"ydy":"一对一",
-                 'zhxt':'智慧学堂'}
+category_name = {"ydy":"",
+                 'zhxt':'_智慧学堂'}
 
 
 @app.route("/getstats/")
 @app.route("/getstats/<dt>")
+@login_required
 def get_stats(dt=None):
+    if current_user.name != "张晓":
+        abort(403,"权限不足")
     am_pm = "AM"
     # am /pm
     category = request.args.get("ct") or 'ydy'
@@ -113,7 +116,7 @@ def get_stats(dt=None):
         if dt_start.weekday() == 6:
             dt_start = dt_start - datetime.timedelta(days=2)
     print(dt_start, dt_end)
-    send_name = "%s统计_%s.xlsx" % (dt, category_name.get(category))
+    send_name = "%s统计%s.xlsx" % (dt, category_name.get(category))
     filename = "tmp/%s.%s" % (send_name, int(time.time()))
     utils.createXlsx(dt_start, dt_end, filename, am_pm, category)
     return send_file(filename, attachment_filename=send_name, as_attachment=True, cache_timeout=1)
