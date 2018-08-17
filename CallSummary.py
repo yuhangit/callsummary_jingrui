@@ -88,12 +88,14 @@ def load_user(user_id):
 category_name = {"ydy":"",
                  'zhxt':'_智慧学堂'}
 
+downloaders = ("张晓", 'yuhan')
 
 @app.route("/getstats/")
 @app.route("/getstats/<dt>")
 @login_required
 def get_stats(dt=None):
-    if current_user.name not in ("张晓", 'yuhan'):
+
+    if current_user.name not in downloader:
         abort(403,"权限不足")
     am_pm = "AM"
     # am /pm
@@ -129,7 +131,7 @@ def home():
     if current_user.is_authenticated:
         infos = PhoneCall.query.filter_by(operator=current_user.name).filter(
             PhoneCall.dt >= datetime.datetime.now().date()).order_by(PhoneCall.dt.desc(),PhoneCall.id.desc()).all()
-    return render_template("index.html",infos = infos)
+    return render_template("index.html",infos = infos, downloaders=downloaders)
 
 
 @app.route("/login", methods=["POST"])
