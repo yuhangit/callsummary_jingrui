@@ -93,7 +93,7 @@ category_name = {"ydy":"",
 @app.route("/getstats/<dt>")
 @login_required
 def get_stats(dt=None):
-    if current_user.name != "张晓":
+    if current_user.name not in ("张晓", 'yuhan'):
         abort(403,"权限不足")
     am_pm = "AM"
     # am /pm

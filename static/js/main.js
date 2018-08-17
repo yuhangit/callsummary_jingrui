@@ -234,4 +234,10 @@
                 })
 
             })
-        })
+
+            //30分钟后隐藏删除按钮
+            $(".btn btn-block btn-info").ready(function () {
+
+                $("").show().fadeOut(30*60*1000)
+            })
+        });
