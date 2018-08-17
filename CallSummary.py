@@ -44,7 +44,7 @@ class PhoneCall(db.Model):
     dt = db.Column(db.DATETIME())
     operator = db.Column(db.String(30))
     student_name = db.Column(db.String(30))
-    age = db.Column(db.Integer)
+    age = db.Column(db.String(30))
     category = db.Column(db.Text())
     home_address = db.Column(db.Text())
     book_dt = db.Column(db.DATETIME())

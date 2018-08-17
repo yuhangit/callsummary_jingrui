@@ -1,4 +1,4 @@
-jingrui.sqlite
+#jingrui.sqlite
 *.pyc
 tmp/
 venv/
