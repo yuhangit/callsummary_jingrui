@@ -13,11 +13,12 @@ def createXlsx(start_dt: datetime.datetime, end_dt: datetime.datetime, filename=
 
     worksheet_basename = end_dt.strftime("%Y.%m.%d")
     workbook = xlsxwriter.Workbook(fileFullPath)
-    if category == 'ydy':
-        infos = CallSummary.PhoneCall.query.filter(CallSummary.PhoneCall.dt >= start_dt, CallSummary.PhoneCall.dt <= end_dt,
+    # if category == 'ydy':
+    #     infos = CallSummary.PhoneCall.query.filter(CallSummary.PhoneCall.dt >= start_dt, CallSummary.PhoneCall.dt <= end_dt,
+    infos = CallSummary.PhoneCall.query.filter(CallSummary.PhoneCall.dt >= start_dt, CallSummary.PhoneCall.dt <= end_dt,
                                                CallSummary.PhoneCall.category == category).all()
-    else:
-        infos = CallSummary.PhoneCall.query.filter(CallSummary.PhoneCall.category == category).all()
+    # else:
+    #     infos = CallSummary.PhoneCall.query.filter(CallSummary.PhoneCall.category == category).all()
 
     worksheet = workbook.add_worksheet(worksheet_basename)
 
