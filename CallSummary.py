@@ -96,12 +96,12 @@ def get_stats(dt=None):
     # am /pm
     category = request.args.get("ct") or 'ydy'
     if category not in category_name:
-        abort(400,"argument ct must be yhy or zhxt")
+        abort(400,"argument ct must be ydy or zhxt")
     dt_end = dateparser.parse(dt, date_formats=["%Y%m%d%H"]) if dt is not None else datetime.datetime.now()
     dt = dt_end.strftime("%Y%m%d")
 
     if dt_end.hour > 13:
-        dt_start = datetime.datetime(year=dt_end.year, month=dt_end.month, day=dt_end.day, hour=12, minute=0, second=0)
+        dt_start = datetime.datetime(year=dt_end.year, month=dt_end.month, day=dt_end.day, hour=13, minute=0, second=0)
         am_pm = "PM"
     else:
         dt_start = dt_end.replace(hour=0, minute=0, second=0)

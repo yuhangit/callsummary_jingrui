@@ -8,7 +8,7 @@ curDir = os.path.dirname(__file__)
 
 
 def createXlsx(start_dt: datetime.datetime, end_dt: datetime.datetime, filename="test.xlsx", am_pm="AM",
-               category='yhy'):
+               category='ydy'):
     fileFullPath = os.path.normpath(os.path.join(curDir, filename))
 
     worksheet_basename = end_dt.strftime("%Y.%m.%d")
@@ -21,7 +21,7 @@ def createXlsx(start_dt: datetime.datetime, end_dt: datetime.datetime, filename=
 
     worksheet = workbook.add_worksheet(worksheet_basename)
 
-    if category == 'yhy':
+    if category == 'ydy':
         # ydy worksheet
 
         headers = OrderedDict([("序号", "seq_id"), ("客户姓名", "name"), ("电话号码", "phone"), ("家庭基本住址", "district")
