@@ -30,7 +30,7 @@
                 var remark = matched_reg[7] || "" ;
                 //console.log("phone:");
                 //console.log(phone);
-                var regmobile = /^0?1[3|4|5|6|8][0-9]\d{8}$/;//手机
+                var regmobile = /^0?1[3|4|5|6|7|8][0-9]\d{8}$/;//手机
                 if (!regmobile.test(phone)){
                     $("#input-check").addClass("alert-danger");
                     $("#input-check").text("电话号码有误");
@@ -99,7 +99,7 @@
                 var remark = matched_reg[9] || "" ;
                 //console.log("phone:");
                 //console.log(phone);
-                var regmobile = /^0?1[3|4|5|6|8][0-9]\d{8}$/;//手机
+                var regmobile = /^0?1[3|4|5|6|7|8][0-9]\d{8}$/;//手机
                 if (!regmobile.test(phone)){
                     $("#input-check-xuetang").addClass("alert-danger");
                     $("#input-check-xuetang").text("电话号码有误");
