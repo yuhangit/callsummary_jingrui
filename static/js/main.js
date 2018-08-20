@@ -236,8 +236,10 @@
             })
 
             //30分钟后隐藏删除按钮
-            $(".btn btn-block btn-info").ready(function () {
-
-                $("").show().fadeOut(30*60*1000)
-            })
+            // $(".btn btn-block btn-info").ready(function () {
+            //
+            //moment() - moment($("#26 > td:nth-child(1)").text())
+             // $("#completion-tbl-xuetang tbody  tr").map(function() { console.log
+            //     $("").show().fadeOut(30*60*1000)
+            // })
         });

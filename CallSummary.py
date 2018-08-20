@@ -95,7 +95,7 @@ downloaders = ("张晓", 'yuhan')
 @login_required
 def get_stats(dt=None):
 
-    if current_user.name not in downloader:
+    if current_user.name not in downloaders:
         abort(403,"权限不足")
     am_pm = "AM"
     # am /pm
