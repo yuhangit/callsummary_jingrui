@@ -105,18 +105,21 @@ def get_stats(dt=None):
     dt_end = dateparser.parse(dt, date_formats=["%Y%m%d%H"]) if dt is not None else datetime.datetime.now()
     dt = dt_end.strftime("%Y%m%d")
 
+    # if dt_end.weekday() == 6:
+    #     dt_pm = datetime.datetime(year=dt_end.year, month=dt_end.month, day=dt_end.day, hour=16, minute=45, second=0)
+    # else:
     dt_pm = datetime.datetime(year=dt_end.year, month=dt_end.month, day=dt_end.day, hour=17, minute=45, second=0)
-    dt_pm_yester = dt_pm - datetime.timedelta(days=1)
 
+    dt_pm_yester = dt_pm - datetime.timedelta(days=1)
     if dt_end.hour > 13:
         dt_start = datetime.datetime(year=dt_end.year, month=dt_end.month, day=dt_end.day, hour=13, minute=0, second=0)
         am_pm = "PM"
         if dt_end > dt_pm:
-            dt_end = dt_pm
+           dt_end = dt_pm
     else:
         dt_start = dt_pm_yester
         if dt_start.weekday() == 6:
-            dt_start = dt_start - datetime.timedelta(days=2)
+            dt_start = datetime.datetime(year=dt_end.year, month=dt_end.month, day=dt_end.day, hour=16, minute=45, second=0) - datetime.timedelta(days=3)
     print(dt_start, dt_end)
     send_name = "%s统计%s.xlsx" % (dt, category_name.get(category))
     filename = "tmp/%s.%s" % (send_name, int(time.time()))
