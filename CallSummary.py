@@ -114,10 +114,16 @@ def get_stats(dt=None):
     if dt_end.hour > 13:
         dt_start = datetime.datetime(year=dt_end.year, month=dt_end.month, day=dt_end.day, hour=13, minute=0, second=0)
         am_pm = "PM"
+
+        # if today is friday
+        if dt_end.weekday() == 4:
+            dt_pm = dt_pm.replace(hour=16, minute=45)
         if dt_end > dt_pm:
            dt_end = dt_pm
+
     else:
         dt_start = dt_pm_yester
+        # if today is monday
         if dt_start.weekday() == 6:
             dt_start = datetime.datetime(year=dt_end.year, month=dt_end.month, day=dt_end.day, hour=16, minute=45, second=0) - datetime.timedelta(days=3)
     print(dt_start, dt_end)
