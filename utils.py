@@ -117,8 +117,10 @@ def createXlsx(start_dt: datetime.datetime, end_dt: datetime.datetime, filename=
         for i, info in enumerate(infos):
             for j, header in enumerate(headers.values()):
                     if header == 'book_dt':
+                        # pass if dtStr is none
                         dtStr = getattr(info, header)
-                        worksheet.write(i + 1, j, dtStr.strftime("%Y-%m-%d"), body_format)
+                        if dtStr:
+                            worksheet.write(i + 1, j, dtStr.strftime("%Y-%m-%d"), body_format)
                     else:
                         worksheet.write(i + 1, j, getattr(info, header), body_format)
         worksheet.set_column(0, 1, 10)
