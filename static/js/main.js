@@ -1,12 +1,12 @@
  $(document).ready(function () {
             // 30分钟后隐藏删除按钮
-            let min = 30;
+            let min = 20;
             setInterval(removeButton,5000);
             function removeButton(){
                  $("table tbody tr").each(function () {
                     let dt = moment($(this).find("td")[0].innerHTML);
                     console.log(moment.now() - dt > min*1000*60);
-                    if (moment.now() - dt > 30*1000*60){
+                    if (moment.now() - dt > 20*1000*60){
                         let btns = $(this).find("button");
                         if(btns.length !== 0){
                             //delete first tr included button
