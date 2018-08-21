@@ -1,4 +1,24 @@
  $(document).ready(function () {
+            // 30分钟后隐藏删除按钮
+            let min = 30;
+            setInterval(removeButton,5000);
+            function removeButton(){
+                 $("table tbody tr").each(function () {
+                    let dt = moment($(this).find("td")[0].innerHTML);
+                    console.log(moment.now() - dt > min*1000*60);
+                    if (moment.now() - dt > 30*1000*60){
+                        let btns = $(this).find("button");
+                        if(btns.length !== 0){
+                            //delete first tr included button
+                            this.removeChild(btns[0].parentNode)
+                        }
+                    }
+                })
+            }
+            removeButton();
+
+
+
             var infoArr = [],
             infoJson = {},
             infoArrXueTang = [],
@@ -233,13 +253,6 @@
                     }
                 })
 
-            })
+            });
 
-            //30分钟后隐藏删除按钮
-            // $(".btn btn-block btn-info").ready(function () {
-            //
-            //moment() - moment($("#26 > td:nth-child(1)").text())
-             // $("#completion-tbl-xuetang tbody  tr").map(function() { console.log
-            //     $("").show().fadeOut(30*60*1000)
-            // })
-        });
+ });
