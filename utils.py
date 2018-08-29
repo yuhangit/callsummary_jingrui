@@ -111,6 +111,8 @@ def createXlsx(start_dt: datetime.datetime, end_dt: datetime.datetime, filename=
         body_format = workbook.add_format()
         body_format.set_text_wrap(True)
 
+
+
         for i, header in enumerate(headers.keys()):
             worksheet.write(0, i, header, headers_format)
 
@@ -130,7 +132,36 @@ def createXlsx(start_dt: datetime.datetime, end_dt: datetime.datetime, filename=
         worksheet.set_column(6, 6, 12)
         worksheet.set_column(7, 7, 25)
 
-    workbook.close()
+# 加小表格
+        worksheet_all = workbook.add_worksheet(worksheet_basename + "_all")
+        headers_all = OrderedDict(
+        [("话务员", "operator"), ("密号", "src_phone"), ("家长姓名", "name"), ("学生姓名", "student_name"), ("电话号码", "phone"),
+         ("年龄", "age"),
+         ("所在域", "home_address"), ("学习中心", "district"), ('预约时间', 'book_dt'), ("备注", "remark"), ("录入时间", "dt")])
+        for i, header in enumerate(headers_all.keys()):
+            worksheet_all.write(0, i, header, headers_format)
+
+        for i, info in enumerate(infos):
+              for j, header in enumerate(headers_all.values()):
+                    if header == 'book_dt':
+                        # pass if dtStr is none
+                        dtStr = getattr(info, header)
+                        if dtStr:
+                            worksheet_all.write(i + 1, j, dtStr.strftime("%Y-%m-%d"), body_format)
+                    elif header == "dt":
+                        dtStr = getattr(info, header)
+                        worksheet_all.write(i + 1, j , dtStr.strftime("%Y-%m-%d %H:%M:%S"), body_format)
+                    else:
+                        worksheet_all.write(i + 1, j, getattr(info, header), body_format)
+        worksheet_all.set_column(0, 3, 10)
+        worksheet_all.set_column(4, 4, 15)
+        worksheet_all.set_column(4, 3, 5)
+        worksheet_all.set_column(6, 7, 25)
+        worksheet_all.set_column(8, 8, 12)
+        worksheet_all.set_column(9, 9, 25)
+
+
+        workbook.close()
 
 
 if __name__ == "__main__":
