@@ -108,7 +108,8 @@ def get_stats(dt=None):
     # if dt_end.weekday() == 6:
     #     dt_pm = datetime.datetime(year=dt_end.year, month=dt_end.month, day=dt_end.day, hour=16, minute=45, second=0)
     # else:
-    dt_pm = datetime.datetime(year=dt_end.year, month=dt_end.month, day=dt_end.day, hour=17, minute=45, second=0)
+    # 8月30改到下午5：30截止下载
+    dt_pm = datetime.datetime(year=dt_end.year, month=dt_end.month, day=dt_end.day, hour=17, minute=30, second=0)
 
     dt_pm_yester = dt_pm - datetime.timedelta(days=1)
     if dt_end.hour > 13:
