@@ -190,6 +190,7 @@ def addinfo():
     info["dt"] = dateparser.parse(info["dt"])
     info["book_dt"] = dateparser.parse(info.get("book_dt")) if info.get("book_dt") else None
     info["operator"] = current_user.name
+    print(info)
     info = PhoneCall(**info)
     db.session.add(info)
     db.session.commit()

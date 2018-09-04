@@ -204,7 +204,7 @@
             $("#input-submit-xuetang").on("click", function () {
                 //console.log("click");
                 if (infoArrXueTang.length == 0){
-                    alert("请录入数学（智慧学堂）");
+                    alert("请录入数据（智慧学堂）");
                     return
                 }
                 $("#input-submit-xuetang").attr("disabled","disabled");
