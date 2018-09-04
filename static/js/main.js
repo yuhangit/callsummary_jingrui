@@ -113,7 +113,7 @@
                 var home_address = matched_reg[3];
                 var name = matched_reg[4];
                 var phone = matched_reg[5].replace(/\ /g,"");
-                var student_name = matched_reg[6];
+                var weakest_subject = matched_reg[6];
                 var age = matched_reg[7];
                 var book_dt = matched_reg[8]
                 var remark = matched_reg[9] || "" ;
@@ -135,12 +135,12 @@
                     var home_address_tag = $("<li class='breadcrumb-item'></li>").text(home_address);
                     var name_tag = $("<li class='breadcrumb-item'></li>").text(name);
                     var phone_tag = $("<li class='breadcrumb-item'></li>").text(phone);
-                    var student_name_tag = $("<li class='breadcrumb-item'></li>").text(student_name);
+                    var weakest_subject_tag = $("<li class='breadcrumb-item'></li>").text(weakest_subject);
                     var age_tag = $("<li class='breadcrumb-item'></li>").text(age);
                     var book_dt_tag = $("<li class='breadcrumb-item'></li>").text(book_dt);
                     var remark_tag = $("<li class='breadcrumb-item'></li>").text(remark);
 
-                    ls.append(station_tag,src_phone_tag,district_tag,home_address_tag,name_tag,phone_tag,student_name_tag
+                    ls.append(station_tag,src_phone_tag,district_tag,home_address_tag,name_tag,phone_tag,weakest_subject_tag
                         ,age_tag,book_dt_tag,remark_tag);
 
 
@@ -155,14 +155,14 @@
                         "home_address":home_address,
                         "name":name,
                         "phone":phone,
-                        "student_name":student_name,
+                        "weakest_subject":weakest_subject,
                         "age":age,
                         "book_dt":book_dt,
                         "remark":remark,
                         "category":"zhxt"
                     };
                     infoArrXueTang.push(dt.local().format("YYYY-MM-DD HH:mm:ss"),station,src_phone,district,home_address,
-                        name,phone,student_name,age,book_dt,remark);
+                        name,phone,weakest_subject,age,book_dt,remark);
                 }
             });
 

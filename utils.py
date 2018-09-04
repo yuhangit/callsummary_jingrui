@@ -98,7 +98,7 @@ def createXlsx(start_dt: datetime.datetime, end_dt: datetime.datetime, filename=
         worksheet_all.set_column(9, 9, 30)
 
     elif category == 'zhxt':
-        headers = OrderedDict([("家长姓名", "name"), ("学生姓名", "student_name"), ("电话号码", "phone"), ("年龄", "age"),
+        headers = OrderedDict([("家长姓名", "name"), ("薄弱科目", "weakest_subject"), ("电话号码", "phone"), ("年龄", "age"),
                                ("所在域", "home_address"), ("学习中心", "district"), ('预约时间', 'book_dt'), ("备注", "remark")])
         headers_format = workbook.add_format()
         headers_format.set_bg_color("#F4B084")
@@ -135,7 +135,7 @@ def createXlsx(start_dt: datetime.datetime, end_dt: datetime.datetime, filename=
 # 加小表格
         worksheet_all = workbook.add_worksheet(worksheet_basename + "_all")
         headers_all = OrderedDict(
-        [("话务员", "operator"), ("密号", "src_phone"), ("家长姓名", "name"), ("学生姓名", "student_name"), ("电话号码", "phone"),
+        [("话务员", "operator"), ("密号", "src_phone"), ("家长姓名", "name"), ("薄弱科目", "weakest_subject"), ("电话号码", "phone"),
          ("年龄", "age"),
          ("所在域", "home_address"), ("学习中心", "district"), ('预约时间', 'book_dt'), ("备注", "remark"), ("录入时间", "dt")])
         for i, header in enumerate(headers_all.keys()):

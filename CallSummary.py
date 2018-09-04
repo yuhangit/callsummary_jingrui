@@ -43,7 +43,7 @@ class PhoneCall(db.Model):
     remark = db.Column(db.Text())
     dt = db.Column(db.DATETIME())
     operator = db.Column(db.String(30))
-    student_name = db.Column(db.String(30))
+    weakest_subject = db.Column(db.String(30))
     age = db.Column(db.String(30))
     category = db.Column(db.Text())
     home_address = db.Column(db.Text())
